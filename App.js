@@ -8,28 +8,30 @@ import {
 import { supabase } from './src/lib/supabase';
 import AppNavigator from './src/navigation/AppNavigator';
 import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 
 export default function App() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [telaAuth, setTelaAuth] = useState('login');
+  
   useEffect(() => {
     let ativo = true;
-
+    
     async function verificarSessao() {
       const inicio = Date.now();
-
+      
       try {
         const { data, error } =
-          await supabase.auth.getSession();
-
+        await supabase.auth.getSession();
+        
         if (error) {
           console.error(
             'Erro ao verificar sessão:',
             error
           );
         }
-
+        
         if (ativo) {
           setSession(data?.session || null);
         }
@@ -38,7 +40,7 @@ export default function App() {
           'Erro ao verificar sessão:',
           error
         );
-
+        
         if (ativo) {
           setSession(null);
         }
@@ -48,7 +50,7 @@ export default function App() {
           0,
           2000 - tempoDecorrido
         );
-
+        
         setTimeout(() => {
           if (ativo) {
             setLoading(false);
@@ -56,9 +58,9 @@ export default function App() {
         }, tempoRestante);
       }
     }
-
+    
     verificarSessao();
-
+    
     const {
       data: { subscription: authListener },
     } = supabase.auth.onAuthStateChange(
@@ -68,31 +70,45 @@ export default function App() {
         }
       }
     );
-
+    
     return () => {
       ativo = false;
       authListener.unsubscribe();
     };
+    
   }, []);
-
+  
   // TELA DE ABERTURA
   if (loading) {
     return (
       <View style={styles.loading}>
-        <Image
-          source={require('./assets/eyescode-splash.png')}
-          style={styles.splash}
-          resizeMode="contain"
-        />
-      </View>
+<Image
+source={require('./assets/eyescode-splash.png')}
+style={styles.splash}
+resizeMode="contain"
+/>
+</View>
     );
   }
-
+  
   // USUÁRIO NÃO LOGADO
   if (!session) {
-    return <LoginScreen />;
+    if (telaAuth === 'cadastro') {
+      return (
+        <RegisterScreen
+onBack={() => setTelaAuth('login')}
+/>
+      );
+    }
+    
+    return (
+      <LoginScreen
+    onRegister={() => setTelaAuth('cadastro')}
+  />
+    );
+    
   }
-
+  
   // USUÁRIO LOGADO
   return <AppNavigator />;
 }
@@ -104,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  
   splash: {
     width: '100%',
     height: '100%',

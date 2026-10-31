@@ -20,9 +20,7 @@ import {
 } from "../theme/colors";
 
 
-export default function LoginScreen({
-  onLogin
-}) {
+export default function LoginScreen({ onLogin, onRegister }) {
 
   const [email, setEmail] =
     useState("");
@@ -181,11 +179,9 @@ export default function LoginScreen({
           Não possui uma conta?
         </Text>
 
-        <TouchableOpacity>
-          <Text style={styles.registerLink}>
-            Criar conta
-          </Text>
-        </TouchableOpacity>
+  <TouchableOpacity onPress={onRegister}>
+  <Text>Criar conta</Text>
+</TouchableOpacity>
 
       </View>
 
