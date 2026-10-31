@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "eyescode-app-dev",
-    "slug": "snack-a89e6524-6869-419c-9842-657a9098186a",
+    "name": "EyesCode",
+    "slug": "app-eyescode",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,6 +15,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "br.com.eyescode.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -25,6 +26,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Aplicativo oficial eyescode"
+    "description": "Aplicativo oficial EyesCode",
+    "extra": {
+      "eas": {
+        "projectId": "fcacbd95-5cd0-472c-bc8a-af687034abe2"
+      }
+    }
   }
 }
